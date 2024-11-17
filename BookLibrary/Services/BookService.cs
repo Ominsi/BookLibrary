@@ -1,6 +1,7 @@
 using BookLibrary.Models;
 using BookLibrary.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BookLibrary.Services;
 
@@ -39,6 +40,17 @@ public class BookService
 
     public Book? Create(Book newBook)
     {
+        var authorLookUp = _context.Authors.SingleOrDefault(a => a.FirstName == newBook.Author!.FirstName && a.LastName == newBook.Author!.LastName);
+        if (authorLookUp is not null)
+        {
+            newBook.Author = _context.Authors.Find(authorLookUp.Id);
+        }
+
+        var genreLookUp = _context.Genres.SingleOrDefault(g => g.Name == newBook.Genre!.Name);
+        if (genreLookUp is not null)
+        {
+            newBook.Genre = _context.Genres.Find(genreLookUp.Id);
+        }
         _context.Books.Add(newBook);
         _context.SaveChanges();
         

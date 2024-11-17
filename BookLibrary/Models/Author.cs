@@ -2,7 +2,7 @@ namespace BookLibrary.Models;
 
 public class Author
 {
-    public int id { get; set; }
+    public int Id { get; set; }
 
     public string? FirstName { get; set; }
 
